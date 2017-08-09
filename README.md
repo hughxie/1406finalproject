@@ -1,5 +1,5 @@
 # 1406finalproject
-# HughXie
-# Richard Ositashvili
-# Sanjay Swamy
-#
+### Contributers :
+ HughXie
+ Richard Ositashvili
+ Sanjay Swamy
