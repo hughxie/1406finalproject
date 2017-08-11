@@ -1,5 +1,6 @@
 # 1406finalproject
 ### Contributers :
- Hugh Xie  
- Richard Ositashvili  
- Sanjay Swamy  
+ Hugh Xie               - ExtraCards 
+ Richard Ositashvili    -   
+ Sanjay Swamy           -   
+ Adrian Ong             - DiscardHighPoints  
