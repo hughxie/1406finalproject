@@ -14,8 +14,18 @@ public class DiscardHighPoints extends Player{
         Card highestPointCard = this.highest_card();        // Returns highest card and sorts deck
         Card previousCard = discardPile.top();              // Returns top card in discard Pile
 
+
+        // Checks if previous card was a 2
+        if (previousCard.getRank() == 2){
+            hand.add(drawPile.pop());
+            hand.add(drawPile.pop());
+        }
+        // Gets rid of highest card if it is an 8
+        else if (highestPointCard.getRank() == 8){
+            discardPile.add(this.hand.remove(0));
+        }
         // Gets Rid of highest card if suits are the same
-        if (highestPointCard.getSuit().equals(previousCard.getSuit())){
+        else if (highestPointCard.getSuit().equals(previousCard.getSuit())){
             discardPile.add(this.hand.remove(0));
         }
         // Checks if we have a playable card
@@ -30,7 +40,7 @@ public class DiscardHighPoints extends Player{
                     }
                 }
             }
-            else{
+            else{                                           // puts card with same suit has highest card
                 for (Card c: hand){
                     if (c.getSuit().equals(highestPointCard.getSuit()) && c.getRank() == previousCard.getRank()){
                         discardPile.add(c);
@@ -40,7 +50,7 @@ public class DiscardHighPoints extends Player{
                 }
             }
         }
-        // We now have to pick up from discard pile
+        // No playable card so we now have to pick up from discard pile
         else{
             // pick from pile
             if (!drawPile.isEmpty()){
@@ -114,6 +124,8 @@ public class DiscardHighPoints extends Player{
         }
         return false;
     }
+
+
 
 
 }
