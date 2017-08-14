@@ -1,58 +1,122 @@
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Stack;
 public class HamperLeader extends Player{
 
-  /*
-`HamperLeader` will try to hamper the progress of the
-leader if the leader is either the next or previous
-player.  If the next player is the leader (least amount
-of cards) then this player will try to hamper their
-progress by playing a power card. If the previous player
-is the leader, this player will hold on to their
-power cards until the direction of play is reversed
-and then hamper them (if this player has a seven
-they will change direction so that they can try to hamper
-the leader).
+    public HamperLeader(Card[] cards){this.hand = new ArrayList<Card>(Arrays.asList(cards));}
 
-  isLeader.setTrue if next player == lowest cards
-  ifLeaderIsNext == false
-    if have7 == true
-      play 7
-    play random card
-    not power cards!
-  else ifLeaderIsNext == true
-    if have2 == tru
-      play 2
-    if have4 == true
-      play 4
-    if have8 == true
-      play 8
-      switch to (random||setupATracker)
+    /* play a card */
+    public boolean play(DiscardPile       discardPile,
+                        Stack<Card>       drawPile,
+                        ArrayList<Player> players)
+    {
+        Card previousCard = discardPile.top();
+        int smallestHand = 52;
+        Player smallestPlayer = null;
 
+        // Finds Smallest Hand
+        for (Player p: players){
+            if (p.getSizeOfHand() < smallestHand){
 
+                smallestPlayer = p;
+            }
+        }
+        if (smallestPlayer.equals(players.indexOf(this) + 1) ||
+                (smallestPlayer.equals(players.get(0)) && this.equals(players.get(players.size()-1)))){
 
+            if (hasSpecial()){
 
+                if (smallestPlayer.equals(players.indexOf(this) + 1) ||
+                        (smallestPlayer.equals(players.get(0)) && this.equals(players.get(players.size()-1)))) {
+                    for (Card c : hand) {
+                        if (c.getRank() == 8 || c.getRank() == 2 || c.getRank() == 4) {
+                            discardPile.add(c);
+                            hand.remove(c);
+                            break;
+                        }
+                    }
 
+                }
+                else if (smallestPlayer.equals(players.indexOf(this) - 1) ||
+                        (smallestPlayer.equals(players.get(players.size()-1)) && this.equals((players.get(0))))){
+                    if (hasSeven()){
+                        for (Card c : hand) {
+                            if (c.getRank() == 7) {
+                                discardPile.add(c);
+                                hand.remove(c);
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        for (Card c: hand){
+                            if (c.getRank() == previousCard.getRank() || c.getSuit().equals(previousCard.getSuit())){
+                                discardPile.add(c);
+                                hand.remove(c);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (canPlay(previousCard)){
+                for (Card c: hand){
+                    if (c.getRank() == previousCard.getRank() || c.getSuit().equals(previousCard.getSuit())){
+                        discardPile.add(c);
+                        hand.remove(c);
+                    }
+                }
+            }
+            else{
+                if (!drawPile.isEmpty()){
 
+                    boolean checker = false;
+                    Card fromDraw;
 
+                    while (!checker){
+                        fromDraw = drawPile.pop();
+                        if ((fromDraw.getSuit().equals(previousCard.getSuit())) ||
+                                (fromDraw.getRank() == previousCard.getRank())){
 
+                            discardPile.add(fromDraw);
+                            checker = true;
+                        }
+                        else{
+                            hand.add(fromDraw);
+                        }
+                    }
+                }
+            }
+        }
 
+        if( this.hand.size() == 0 ){return true;}
+        return false;
 
+    }
 
+    public boolean hasSpecial(){
+        for (Card c: hand){
+            if (c.getRank() == 8 || c.getRank() == 2 || c.getRank() == 4 || c.getRank() == 7){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean hasSeven(){
+        for (Card c: hand){
+            if (c.getRank() == 7){
+                return true;
+            }
+        }
+        return false;
+    }
 
-  */
-
-
-
-  public boolean play(
-    DiscardPile discardPile,
-	  Stack<Card> drawPile,
-		ArrayList<Player> players){
-      // return true if player wins game by playing last card
-    	// returns false otherwise
-    	// side effects: plays a card to top of discard Pile, possibly taking zero
-    	//               or more cards from the top of the drawPile
-    	//               card played must be valid card
-
-
+    private boolean canPlay(Card discardTop){
+        for (Card c: hand){
+            if (c.getRank() == discardTop.getRank() || c.getSuit().equals(discardTop.getSuit())){
+                return true;
+            }
+        }
+        return false;
     }
 }
