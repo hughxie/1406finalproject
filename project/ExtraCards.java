@@ -4,47 +4,82 @@ import java.util.Stack;
 
 public class ExtraCards extends Player{
 
+
+
   public ExtraCards(Card[] cards) {
     this.hand = new ArrayList<Card>(Arrays.asList(cards));
   }
 
   public boolean play(
-    public DiscardPile       discardPile,
+    DiscardPile       discardPile,
     Stack<Card>       drawPile,
     ArrayList<Player> players
   )
   {
+    boolean played = false;
     // Checks if previous card was a 2
     if (discardPile.top().getRank() == 2){
         hand.add(drawPile.pop());
         hand.add(drawPile.pop());
     }
-    for (int i = 0;i < players.size(); i++) {
-      Card current;
-      int next = nextPlayer(players);
 
-      //if someone is about to win the game
-      if (players.get(next).getSizeOfHand() == 1) {
-        int power = havePower();
-        if (power > 0) {
-          playCard(discardPile, power);
-        } else {
-          getPower(drawPile);
+    int next = nextPlayer(players);
+
+    //if someone is about to win the game
+    if (players.get(next).getSizeOfHand() == 1) {
+      int power = havePower();
+      if (power > 0) {
+        playCard(discardPile, power);
+        played = true;
+      } else {
+        boolean check = false;
+        while (!check) {
+          pickupCard(drawPile);
+          if (isPower(topCard())) {
+            playCard(discardPile, hand.size());
+            played = true;
+            break;
+          }
         }
       }
-    }
-  }
-
-  public boolean getPower(Stack<Card> drawPile) {
-    boolean check = false;
-    while (!check) {
-      pickupCard(drawPile);
-      if (isPower(topCard())) {
-        return true;
+    } else {
+        pickupCard(drawPile);
+        if (isPower(topCard())) {
+          playCard(discardPile, hand.size());
+          played = true;
+        }
       }
+    Card lastCard = discardPile.top();
+    int lastRank = lastCard.getRank();
+    String lastSuit = lastCard.getSuit();
+    for (Card c : hand) {
+      if (c.getSuit().equals(lastSuit)) {
+        discardPile.add(c);
+        hand.remove(c);
+        played = true;
+        break;
+      } else if (c.getRank() == lastRank) {
+        discardPile.add(c);
+        hand.remove(c);
+        played = true;
+        break;
+      }
+    }
+
+
+    //if cant play
+    if (!played) {
+      hand.add(drawPile.pop());
+    }
+
+    //win check
+    if (hand.size() == 0) {
+      return true;
     }
     return false;
   }
+
+
 
   public int havePower() {
     for (int i = 0; i < hand.size(); i++) {
@@ -80,15 +115,15 @@ public class ExtraCards extends Player{
   }
 
   public int nextPlayer(ArrayList<Player> players) {
-    int me;
     int next;
+    int me = 0;
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).equals(this)) {
         me = i;
         break;
       }
     }
-    if (me < players.size()) {
+    if (me < players.size()-1) {
       next = me + 1;
     } else {
       next = 0;
