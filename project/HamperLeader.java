@@ -14,53 +14,37 @@ public class HamperLeader extends Player{
     DiscardPile discardPile,
 	  Stack<Card> drawPile,
 		ArrayList<Player> players){
-      // return true if player wins game by playing last card
-    	// returns false otherwise
-    	// side effects: plays a card to top of discard Pile, possibly taking zero
-    	//               or more cards from the top of the drawPile
-    	//               card played must be valid card
-      /*
-    `HamperLeader` will try to hamper the progress of the
-    leader if the leader is either the next or previous
-    player.  If the next player is the leader (least amount
-    of cards) then this player will try to hamper their
-    progress by playing a power card. If the previous player
-    is the leader, this player will hold on to their
-    power cards until the direction of play is reversed
-    and then hamper them (if this player has a seven
-    they will change direction so that they can try to hamper
-    the leader).
+      System.out.println("----------------");
+      System.out.println(hand);
+      System.out.println("----------------");
 
-      isLeader.setTrue if next player == lowest cards
-      ifLeaderIsNext == false
-        if have7 == true
-          play 7
-        play random card
-        not power cards!
-      else ifLeaderIsNext == true
-        if have2 == tru
-          play 2
-        if have4 == true
-          play 4
-        if have8 == true
-          play 8
-          switch to (random||setupATracker)
-      */
-
-
+      //Gets position in list of players
       int position = getPosition(players);
 
-      if (previousCard.getRank() == 2){
+      //Checks if a 2 was played,
+      if (discardPile.top().getRank() == 2){
           hand.add(drawPile.pop());
           hand.add(drawPile.pop());
-      }
+          System.out.println("----------------");
+          System.out.println("HAMPER PICKED UP 2");
+          System.out.println("----------------");
+          return false;
+        }
+
 
       do{
+        //IF the next person is leader, checks for 2, checks for 4
         if(nextIsLeader(players,position)){
+          System.out.println("----------------");
+          System.out.println("LEADER IN FRONT");
+          System.out.println("----------------");
           for(int i =0; i<hand.size(); ++i){
             if(hand.get(i).getRank() == 2 && playable(hand.get(i),discardPile)){
               discardPile.add(this.hand.remove(i));
               hasNotPlayed = false;
+              System.out.println("----------------");
+              System.out.println("HAMPER PLAYED A 2");
+              System.out.println("----------------");
               break;
             }
           }
@@ -68,47 +52,66 @@ public class HamperLeader extends Player{
             for(int i =0; i<hand.size(); ++i){
               if(hand.get(i).getRank() == 4 && playable(hand.get(i),discardPile)){
                 discardPile.add(this.hand.remove(i));
+                hasNotPlayed = false;
+                System.out.println("----------------");
+                System.out.println("HAMPER PLAYED A 4");
+                System.out.println("----------------");
                 break;
               }
             }
           }
         }
+        //If the previous person is leader plays 7
         else if(previousIsLeader(players,position)){
+          System.out.println("----------------");
+          System.out.println("LEADER BEHIND");
+          System.out.println("----------------");
           for(int i =0; i<hand.size(); ++i){
             if(hand.get(i).getRank() == 7 && playable(hand.get(i),discardPile)){
               discardPile.add(this.hand.remove(i));
               hasNotPlayed = false;
+              System.out.println("----------------");
+              System.out.println("HAMPER PLAYED A 7");
+              System.out.println("----------------");
               break;
             }
           }
         }
         else{
           for(int i =0; i<hand.size(); ++i){
-            if(hand.get(i).getRank() != 7 && hand.get(i).getRank() != 2 && (hand.get(i).getRank() != 4 && playable(hand.get(i),discardPile))){
+            if(hand.get(i).getRank() != 7 && hand.get(i).getRank() != 2 && (hand.get(i).getRank() != 4 && playable(hand.get(i),discardPile) || hand.get(i).getRank() == 8)){
               discardPile.add(this.hand.remove(i));
+              System.out.println("----------------");
+              System.out.println("HAMPER PLAYED A RANDOM CARD");
+              System.out.println("----------------");
               hasNotPlayed = false;
               break;
             }
           }
         }
         if (hasNotPlayed && !drawPile.isEmpty()){
+          System.out.println("----------------");
+          System.out.println("HAMPER PICKED UP A CARD");
+          System.out.println("----------------");
           Card pickup;
           pickup = drawPile.pop();
           hand.add(pickup);
-        }
-        else{
-          for(int i =0; i<hand.size(); ++i){
-            if(playable(hand.get(i),discardPile)){
-              discardPile.add(this.hand.remove(i));
-              hasNotPlayed = false;
-              break;
-            }
+          if(playable(pickup,discardPile)){
+            System.out.println("----------------");
+            System.out.println("HAMPER PLAYED A RANDOM CARD");
+            System.out.println("----------------");
+            hasNotPlayed = false;
+            break;
           }
+        }
+
           if(hasNotPlayed){
-            System.out.println("This player has passed");
+            System.out.println("----------------");
+            System.out.println("HAMPER PASSES");
+            System.out.println("----------------");
             hasNotPlayed = false;
           }
-        }
+
       }while(hasNotPlayed);
 
       if(this.hand.size()==0){
