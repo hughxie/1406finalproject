@@ -81,12 +81,15 @@ public class Crazy8Game{
             System.out.println("discard pile : " + discardPile.top() );
 
             if (discardPile.top().getRank() == 7){              // Reverses order if 7 Card is played
-                negate *= -1;
+                System.out.println("----------------");
                 System.out.println("DIRECTION SWITCH");
+                System.out.println("----------------");
             }
             else if(discardPile.top().getRank() == 4){          // Skips next player if 4 Card is played
                 player = (player + negate);
+                System.out.println("----------------");
                 System.out.println("TURN SKIPPED");
+                System.out.println("----------------");
             }
 
         }
