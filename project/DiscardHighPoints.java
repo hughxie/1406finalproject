@@ -129,7 +129,7 @@ public class DiscardHighPoints extends Player{
                 boolean checker = false;
                 Card fromDraw;
 
-                while (!checker){
+                while (!checker && !drawPile.isEmpty()){
                     fromDraw = drawPile.pop();
                     if ((fromDraw.getSuit().equals(previousCard.getSuit())) ||
                             (fromDraw.getRank() == previousCard.getRank())){
