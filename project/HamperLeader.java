@@ -23,8 +23,12 @@ public class HamperLeader extends Player{
 
       //Checks if a 2 was played,
       if (discardPile.top().getRank() == 2){
+          if(!drawPile.isEmpty()){
+            hand.add(drawPile.pop());
+          }
+          if(!drawPile.isEmpty()){
           hand.add(drawPile.pop());
-          hand.add(drawPile.pop());
+        }
           System.out.println("----------------");
           System.out.println("HAMPER PICKED UP 2");
           System.out.println("----------------");
@@ -79,7 +83,15 @@ public class HamperLeader extends Player{
         }
         else{
           for(int i =0; i<hand.size(); ++i){
-            if(hand.get(i).getRank() != 7 && hand.get(i).getRank() != 2 && (hand.get(i).getRank() != 4 && playable(hand.get(i),discardPile) || hand.get(i).getRank() == 8)){
+            if( hand.get(i).getRank() == 8){
+              discardPile.add(this.hand.remove(i));
+              System.out.println("----------------");
+              System.out.println("HAMPER PLAYED AN 8");
+              System.out.println("----------------");
+              hasNotPlayed = false;
+              break;
+            }
+            else if(hand.get(i).getRank() != 7 && hand.get(i).getRank() != 2 && (hand.get(i).getRank() != 4 && playable(hand.get(i),discardPile))){
               discardPile.add(this.hand.remove(i));
               System.out.println("----------------");
               System.out.println("HAMPER PLAYED A RANDOM CARD");
@@ -94,6 +106,7 @@ public class HamperLeader extends Player{
           System.out.println("HAMPER PICKED UP A CARD");
           System.out.println("----------------");
           Card pickup;
+
           pickup = drawPile.pop();
           hand.add(pickup);
           if(playable(pickup,discardPile)){
