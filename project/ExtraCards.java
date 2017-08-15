@@ -18,11 +18,14 @@ public class ExtraCards extends Player{
     ArrayList<Player> players
   )
   {
+
+    System.out.println("- - - - - - - - - - - - - - -");
+    System.out.println("Hand before play: " + hand);
     boolean played = false;
     // Checks if previous card was a 2
-    if (discardPile.top().getRank() == 2){
-        hand.add(drawPile.pop());
-        hand.add(drawPile.pop());
+    if ((discardPile.top().getRank() == 2) && (discardPile.top().rounds == 1)){
+        pickupCard(drawPile);
+        pickupCard(drawPile);
     }
     int direction = Crazy8Game.getDirection();
 
@@ -30,26 +33,29 @@ public class ExtraCards extends Player{
 
     //if someone is about to win the game
     if (players.get(next).getSizeOfHand() == 1) {
-      System.out.println("Player is going to win, play power." + next);
+      System.out.println("Player is going to win: " + next);
       int power = havePower();
       //if power card is available, play the card
       if (power > 0) {
-        System.out.println("has power." + hand.get(power));
         Card card = hand.get(power);
         if (canPlay(discardPile, card)) {
-          playCard(discardPile, power);
+          System.out.println("has power: " + hand.get(power));
+          System.out.println(card);
+          discardPile.add(card);
+          hand.remove(card);
           played = true;
           System.out.println("Stopped player "+ next +" from winning with a " + card);
+
         }
       } else {
-        System.out.println("no power.");
+        System.out.println("no power to play.");
         //if no power card, keep picking up until one is available
         boolean check = false;
-        while (!check) {
+        while ((!check) && (!drawPile.isEmpty())) {
           System.out.println("picking up until has power");
           pickupCard(drawPile);
           if (isPower(topCard())) {
-            System.out.println("found power.");
+            System.out.println("found power: " + topCard());
             playCard(discardPile, hand.size());
             played = true;
             break;
@@ -79,8 +85,10 @@ public class ExtraCards extends Player{
 
     //if cant play
     if ((!played) && (!drawPile.isEmpty())) {
-      hand.add(drawPile.pop());
+      System.out.println("Can't play.");
+      pickupCard(drawPile);
     }
+    System.out.println("Hand after play: " + hand);
 
     //win check
     if (hand.size() == 0) {
