@@ -5,11 +5,13 @@ import java.util.Stack;
 public class ExtraCards extends Player{
 
 
-
+  //constructor
   public ExtraCards(Card[] cards) {
     this.hand = new ArrayList<Card>(Arrays.asList(cards));
   }
 
+
+  //play method
   public boolean play(
     DiscardPile       discardPile,
     Stack<Card>       drawPile,
@@ -28,10 +30,15 @@ public class ExtraCards extends Player{
     //if someone is about to win the game
     if (players.get(next).getSizeOfHand() == 1) {
       int power = havePower();
+      //if power card is available, play the card
       if (power > 0) {
-        playCard(discardPile, power);
-        played = true;
+        Card card = hand.get(power);
+        if (canPlay(discardPile, card)) {
+          playCard(discardPile, power);
+          played = true;
+        }
       } else {
+        //if no power card, keep picking up until one is available
         boolean check = false;
         while (!check) {
           pickupCard(drawPile);
@@ -42,6 +49,7 @@ public class ExtraCards extends Player{
           }
         }
       }
+      //if nobody is going to win, pick up one card and if its a power card, play it
     } else {
         pickupCard(drawPile);
         if (isPower(topCard())) {
@@ -49,16 +57,10 @@ public class ExtraCards extends Player{
           played = true;
         }
       }
-    Card lastCard = discardPile.top();
-    int lastRank = lastCard.getRank();
-    String lastSuit = lastCard.getSuit();
+
+    //if no power cards come up, play a valid card
     for (Card c : hand) {
-      if (c.getSuit().equals(lastSuit)) {
-        discardPile.add(c);
-        hand.remove(c);
-        played = true;
-        break;
-      } else if (c.getRank() == lastRank) {
+      if ((canPlay(discardPile, c)) && (!played)) {
         discardPile.add(c);
         hand.remove(c);
         played = true;
@@ -68,7 +70,7 @@ public class ExtraCards extends Player{
 
 
     //if cant play
-    if (!played) {
+    if ((!played) && (!drawPile.isEmpty())) {
       hand.add(drawPile.pop());
     }
 
@@ -79,8 +81,18 @@ public class ExtraCards extends Player{
     return false;
   }
 
+  //check to see if the card is valid to play
+  public boolean canPlay(DiscardPile discardPile, Card card) {
+    Card lastCard = discardPile.top();
+    int lastRank = lastCard.getRank();
+    String lastSuit = lastCard.getSuit();
+    if (((card.getRank() == lastRank) || (card.getSuit().equals(lastSuit) || (card.getRank() == 8)))&&(hand.size() > 0)) {
+      return true;
+    }
+    return false;
+  }
 
-
+  //checks to see if hand has power code
   public int havePower() {
     for (int i = 0; i < hand.size(); i++) {
       if (isPower(hand.get(i))) {
@@ -90,6 +102,7 @@ public class ExtraCards extends Player{
     return -1;
   }
 
+  //checks if card is power
   public boolean isPower(Card card) {
     int rank = card.getRank();
     if ((rank == 2) || (rank == 4) || (rank == 7) || (rank == 8)) {
@@ -99,7 +112,7 @@ public class ExtraCards extends Player{
   }
 
   public void playCard(DiscardPile discardPile, int index) {
-    discardPile.add(hand.remove(index));
+    discardPile.add(hand.remove(index-1));
   }
 
   public boolean pickupCard(Stack<Card> drawPile) {
