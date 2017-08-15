@@ -62,9 +62,9 @@ public class Crazy8Game{
 
         while( !win ){
             //handles reverse order, prevents out of bounds
-            if ((player==0) && (negate==(-1))) {
+            if ((player <= 0) && (negate==(-1))) {
               player = players.length-1;
-            } else if ((player==players.length-1) && (negate == 1)) {
+            } else if ((player >= players.length-1) && (negate == 1)) {
               player = 0;
             } else {
               player = player + negate;
@@ -82,7 +82,7 @@ public class Crazy8Game{
                 negate *= -1;
             }
             else if(discardPile.top().getRank() == 4){          // Skips next player if 4 Card is played
-                player = (player + negate) % players.length;
+                player = (player + negate);
             }
 
         }

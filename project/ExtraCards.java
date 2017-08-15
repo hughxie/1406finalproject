@@ -29,6 +29,7 @@ public class ExtraCards extends Player{
 
     //if someone is about to win the game
     if (players.get(next).getSizeOfHand() == 1) {
+      System.out.println("Player is going to win, play power.");
       int power = havePower();
       //if power card is available, play the card
       if (power > 0) {
