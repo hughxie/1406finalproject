@@ -13,6 +13,7 @@ public class Card implements Comparable<Card>{
     protected String suit;
     protected String rank;
     protected HashMap<String, Integer> rankValue;
+    protected int rounds = 0;
 
     /** creates a card with specified suit and rank
      *
@@ -74,6 +75,12 @@ public class Card implements Comparable<Card>{
         else if ((this.getRank() != 2 || this.getRank() != 4) &&
                 (other.getRank() == 2 || other.getRank() == 4)){
             return -1;
+        }
+        else if ((this.getRank() == 2) && other.getRank() == 4){
+            return 0;
+        }
+        else if ((this.getRank() == 4) && other.getRank() == 2){
+            return 0;
         }
 
         // For 7 (20 points)
