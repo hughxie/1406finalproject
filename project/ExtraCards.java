@@ -24,26 +24,32 @@ public class ExtraCards extends Player{
         hand.add(drawPile.pop());
         hand.add(drawPile.pop());
     }
+    int direction = Crazy8Game.getDirection();
 
-    int next = nextPlayer(players);
+    int next = nextPlayer(players, direction);
 
     //if someone is about to win the game
     if (players.get(next).getSizeOfHand() == 1) {
-      System.out.println("Player is going to win, play power.");
+      System.out.println("Player is going to win, play power." + next);
       int power = havePower();
       //if power card is available, play the card
       if (power > 0) {
+        System.out.println("has power." + hand.get(power));
         Card card = hand.get(power);
         if (canPlay(discardPile, card)) {
           playCard(discardPile, power);
           played = true;
+          System.out.println("Stopped player "+ next +" from winning with a " + card);
         }
       } else {
+        System.out.println("no power.");
         //if no power card, keep picking up until one is available
         boolean check = false;
         while (!check) {
+          System.out.println("picking up until has power");
           pickupCard(drawPile);
           if (isPower(topCard())) {
+            System.out.println("found power.");
             playCard(discardPile, hand.size());
             played = true;
             break;
@@ -52,6 +58,7 @@ public class ExtraCards extends Player{
       }
       //if nobody is going to win, pick up one card and if its a power card, play it
     } else {
+      System.out.println("nobody is going to win.");
         pickupCard(drawPile);
         if (isPower(topCard())) {
           playCard(discardPile, hand.size());
@@ -113,7 +120,10 @@ public class ExtraCards extends Player{
   }
 
   public void playCard(DiscardPile discardPile, int index) {
-    discardPile.add(hand.remove(index-1));
+  	System.out.println("playcard method" + hand);
+  	Card card = hand.get(index-1);
+  	discardPile.add(card);
+  	hand.remove(card);
   }
 
   public boolean pickupCard(Stack<Card> drawPile) {
@@ -128,7 +138,8 @@ public class ExtraCards extends Player{
     return this.hand.get(hand.size()-1);
   }
 
-  public int nextPlayer(ArrayList<Player> players) {
+
+  public int nextPlayer(ArrayList<Player> players, int direction) {
     int next;
     int me = 0;
     for (int i = 0; i < players.size(); i++) {
@@ -137,10 +148,12 @@ public class ExtraCards extends Player{
         break;
       }
     }
-    if (me < players.size()-1) {
-      next = me + 1;
-    } else {
+    if ((me >= players.size()-1) && (direction == 1)) {
       next = 0;
+    } else if ((me <= 0) && (direction == -1)) {
+      next = players.size()-1;
+    } else {
+      next = me + direction;
     }
     return next;
   }

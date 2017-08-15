@@ -6,6 +6,8 @@ import java.util.Collections;
 
 public class Crazy8Game{
 
+    public static int negate = 1;
+
     public static void main(String[] args){
 
 		/* create the deck */
@@ -58,7 +60,6 @@ public class Crazy8Game{
         ArrayList<Player> people = new ArrayList<Player>(Arrays.asList(players));
         discardPile.add( drawPile.pop() );
 
-        int negate = 1;
 
         while( !win ){
             //handles reverse order, prevents out of bounds
@@ -88,5 +89,9 @@ public class Crazy8Game{
         }
         System.out.println("winner is player " + player);
 
+    }
+
+    public static int getDirection() {
+      return negate;
     }
 }
