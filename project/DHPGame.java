@@ -34,6 +34,7 @@ public class DHPGame {
             }
 
             /* players in the game */
+
             /*
             Player[] players = new Player[3];
             players[0] = new DiscardHighPoints(Arrays.copyOfRange(deck, 0, 5));
@@ -44,17 +45,20 @@ public class DHPGame {
             System.out.println("0 : " + Arrays.toString(Arrays.copyOfRange(deck, 10, 15)));
             */
 
-            Card[] deck0 = new Card[6];
+
+
+            Card[] deck0 = new Card[7];
             Card[] deck1 = new Card[6];
 
 
             //deck0[0] = new Card (Card.SUITS[0], Card.RANKS[5]);
             deck0[0] = new Card (Card.SUITS[0], Card.RANKS[7]);
             deck0[1] = new Card (Card.SUITS[3], Card.RANKS[5]);
-            deck0[2] = new Card (Card.SUITS[3], Card.RANKS[4]);
-            deck0[3] = new Card (Card.SUITS[0], Card.RANKS[2]);
-            deck0[4] = new Card (Card.SUITS[3], Card.RANKS[8]);
-            deck0[5] = new Card (Card.SUITS[3], Card.RANKS[4]);
+            deck0[2] = new Card (Card.SUITS[1], Card.RANKS[3]);
+            deck0[3] = new Card (Card.SUITS[3], Card.RANKS[4]);
+            deck0[4] = new Card (Card.SUITS[0], Card.RANKS[2]);
+            deck0[5] = new Card (Card.SUITS[3], Card.RANKS[8]);
+            deck0[6] = new Card (Card.SUITS[3], Card.RANKS[4]);
 
             //deck1[0] = new Card (Card.SUITS[0], Card.RANKS[5]);
             deck1[0] = new Card (Card.SUITS[1], Card.RANKS[8]);
@@ -66,11 +70,14 @@ public class DHPGame {
 
 
 
+
             Player[] players = new Player[2];
             players[0] = new BadPlayer( deck0 );
             System.out.println("0 : " + players[0].hand);
             players[1] = new DiscardHighPoints( deck1 );
             System.out.println("0 : " + players[1].hand);
+
+
 
 
 
@@ -119,6 +126,9 @@ public class DHPGame {
                 if (discardPile.top().getRank() == 2){
                     discardPile.top().rounds++;
                 }
+                else if (discardPile.top().getRank() == 4){
+                    discardPile.top().rounds++;
+                }
 
                 win = people.get(player).play(discardPile, drawPile, people);
 
@@ -142,9 +152,12 @@ public class DHPGame {
                 else if (discardPile.top().getRank() == 7){              // Reverses order if 7 Card is played
                     negate *= -1;
                 }
-                else if (discardPile.top().getRank() == 4) {          // Skips next player if 4 Card is played
+                /*
+                else if (discardPile.top().getRank() == 4 && players.length > 2) {          // Skips next player if 4 Card is played
                     player = (player + negate);
                 }
+                */
+
 
             }
             System.out.println("winner is player " + player);

@@ -27,6 +27,9 @@ public class DiscardHighPoints extends Player{
             }
             System.out.println("\nPicks up 2 cards from draw pile if draw pile isn't empty.");
         }
+        else if (previousCard.getRank() == 4 && previousCard.rounds == 1){
+            System.out.println("\nSkipped my turn.");
+        }
         // Gets rid of highest card if it is an 8 and sets suit to next highest card
         else if (highestPointCard.getRank() == 8){
 
