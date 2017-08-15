@@ -82,7 +82,7 @@ public class Crazy8Game{
                 negate *= -1;
             }
             else if(discardPile.top().getRank() == 4){          // Skips next player if 4 Card is played
-                player = (player + 1) % players.length;
+                player = (player + negate) % players.length;
             }
 
         }
