@@ -52,7 +52,7 @@ public class HamperLeader extends Player{
               break;
             }
           }
-          if(!hasNotPlayed){
+          if(hasNotPlayed){
             for(int i =0; i<hand.size(); ++i){
               if(hand.get(i).getRank() == 4 && playable(hand.get(i),discardPile)){
                 discardPile.add(this.hand.remove(i));
@@ -81,6 +81,7 @@ public class HamperLeader extends Player{
             }
           }
         }
+        //If the leader is not adjacent, plays a random card
         if(hasNotPlayed){
           for(int i =0; i<hand.size(); ++i){
             if(hand.get(i).getRank() == 8){
@@ -101,6 +102,7 @@ public class HamperLeader extends Player{
             }
           }
         }
+        //Picks up a card if can't play
         if (hasNotPlayed && !drawPile.isEmpty()){
           System.out.println("----------------");
           System.out.println("HAMPER PICKED UP A CARD");
@@ -121,7 +123,7 @@ public class HamperLeader extends Player{
             hand.add(pickup);
           }
         }
-
+        //Still hasn't played a card
           if(hasNotPlayed){
             System.out.println("----------------");
             System.out.println("HAMPER PASSES");
