@@ -19,7 +19,10 @@ public class ExtraCards extends Player{
   )
   {
 
-    System.out.println("- - - - - - - - - - - - - - -");
+
+    System.out.println("--- EXTRACARDS ---");
+
+
     System.out.println("Hand before play: " + hand);
     boolean played = false;
     // Checks if previous card was a 2

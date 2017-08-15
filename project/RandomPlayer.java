@@ -13,7 +13,6 @@ public class RandomPlayer extends Player{
 											ArrayList<Player> players)
 	{
 
-    System.out.println("- - - - - - - - - - - - - - -");
     //picks up cards if last played was 2
 		if (discardPile.top().getRank() == 2) {
       getCard(drawPile);
