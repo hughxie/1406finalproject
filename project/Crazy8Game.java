@@ -31,16 +31,16 @@ public class Crazy8Game{
 
 		/* players in the game */
         Player[] players = new Player[5];
-        players[0] = new ExtraCards( Arrays.copyOfRange(deck, 0, 5) );
+        players[0] = new HamperLeader( Arrays.copyOfRange(deck, 0, 5) );
         System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 0, 5)));
-        players[1] = new ExtraCards( Arrays.copyOfRange(deck, 5, 10) );
+        players[1] = new BadPlayer( Arrays.copyOfRange(deck, 5, 10) );
         System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 5, 10)));
         players[2] = new BadPlayer( Arrays.copyOfRange(deck, 10, 15) );
         System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 10, 15)));
-        players[3] = new BadPlayer( Arrays.copyOfRange(deck, 10, 15) );
-        System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 10, 15)));
-        players[4] = new BadPlayer( Arrays.copyOfRange(deck, 10, 15) );
-        System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 10, 15)));
+        players[3] = new BadPlayer( Arrays.copyOfRange(deck, 15, 20) );
+        System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 15, 20)));
+        players[4] = new BadPlayer( Arrays.copyOfRange(deck, 20, 25) );
+        System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 20,35 )));
 
 
 		/* discard and draw piles */
@@ -62,6 +62,7 @@ public class Crazy8Game{
 
 
         while( !win ){
+
             //handles reverse order, prevents out of bounds
             if ((player <= 0) && (negate==(-1))) {
               player = players.length-1;
@@ -81,9 +82,11 @@ public class Crazy8Game{
 
             if (discardPile.top().getRank() == 7){              // Reverses order if 7 Card is played
                 negate *= -1;
+                System.out.println("DIRECTION SWITCH");
             }
             else if(discardPile.top().getRank() == 4){          // Skips next player if 4 Card is played
                 player = (player + negate);
+                System.out.println("TURN SKIPPED");
             }
 
         }
