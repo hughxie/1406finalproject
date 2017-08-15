@@ -28,12 +28,16 @@ public class Crazy8Game{
         }
 
 		/* players in the game */
-        Player[] players = new Player[3];
-        players[0] = new BadPlayer( Arrays.copyOfRange(deck, 0, 5) );
+        Player[] players = new Player[5];
+        players[0] = new ExtraCards( Arrays.copyOfRange(deck, 0, 5) );
         System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 0, 5)));
-        players[1] = new BadPlayer( Arrays.copyOfRange(deck, 5, 10) );
+        players[1] = new ExtraCards( Arrays.copyOfRange(deck, 5, 10) );
         System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 5, 10)));
         players[2] = new BadPlayer( Arrays.copyOfRange(deck, 10, 15) );
+        System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 10, 15)));
+        players[3] = new BadPlayer( Arrays.copyOfRange(deck, 10, 15) );
+        System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 10, 15)));
+        players[4] = new BadPlayer( Arrays.copyOfRange(deck, 10, 15) );
         System.out.println("0 : " + Arrays.toString( Arrays.copyOfRange(deck, 10, 15)));
 
 
@@ -54,8 +58,16 @@ public class Crazy8Game{
         ArrayList<Player> people = new ArrayList<Player>(Arrays.asList(players));
         discardPile.add( drawPile.pop() );
 
+        int negate = 1;
+
         while( !win ){
-            player = (player + 1) % players.length;
+            if ((player==0) && (negate==(-1))) {
+              player = players.length-1;
+            } else if ((player==players.length-1) && (negate == 1)) {
+              player = 0;
+            } else {
+              player = player + negate;
+            }
             System.out.println("player " + player);
             System.out.println("draw pile    : " + drawPile.peek() );
             System.out.println("discard pile : " + discardPile.top() );
@@ -66,7 +78,7 @@ public class Crazy8Game{
             System.out.println("discard pile : " + discardPile.top() );
 
             if (discardPile.top().getRank() == 7){              // Reverses order if 7 Card is played
-                Collections.reverse(people);
+                negate *= -1;
             }
             else if(discardPile.top().getRank() == 4){          // Skips next player if 4 Card is played
                 player = (player + 1) % players.length;
