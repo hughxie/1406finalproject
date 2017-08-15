@@ -61,6 +61,7 @@ public class Crazy8Game{
         int negate = 1;
 
         while( !win ){
+            //handles reverse order, prevents out of bounds
             if ((player==0) && (negate==(-1))) {
               player = players.length-1;
             } else if ((player==players.length-1) && (negate == 1)) {
