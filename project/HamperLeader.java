@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Arrays;
 
+//Richard Ositashvili
+//101031095
 public class HamperLeader extends Player{
   boolean hasNotPlayed =true ;
 
