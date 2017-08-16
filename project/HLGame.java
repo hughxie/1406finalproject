@@ -4,8 +4,9 @@ import java.util.Stack;
 import java.util.Random;
 import java.util.Collections;
 
+//Richard Ositashvili
+//101031085
 public class HLGame{
-
     public static int negate = 1;
 
     public static void main(String[] args){
